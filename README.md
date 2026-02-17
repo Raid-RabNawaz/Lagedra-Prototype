@@ -1,20 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Lagedra
 
-# Run and deploy your AI Studio app
+Vite + React app configured for:
+- Local development with Docker (no local Node.js required)
+- GitHub Pages deployment through GitHub Actions
 
-This contains everything you need to run your app locally.
+## Local run with Docker
 
-View your app in AI Studio: https://ai.studio/apps/drive/1Z1LJTzk_I9sf5E9FblJW_p5B7B4bvxFs
+1. Optional: create `.env` and set your key:
+   `GEMINI_API_KEY=your_key_here`
+2. Start dev server:
+   `docker compose up app`
+3. Open:
+   `http://localhost:3000`
 
-## Run Locally
+## Local production preview with Docker
 
-**Prerequisites:**  Node.js
+1. Build and preview:
+   `docker compose up preview`
+2. Open:
+   `http://localhost:4173`
 
+## GitHub Pages deployment
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1. Push to the `main` branch.
+2. In GitHub repository settings:
+   - Go to `Settings -> Pages`
+   - Set `Build and deployment -> Source` to `GitHub Actions`
+3. Workflow file:
+   `.github/workflows/deploy-pages.yml`
+
+The Vite `base` path is auto-detected in GitHub Actions using your repository name, so assets resolve correctly on GitHub Pages.
