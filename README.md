@@ -30,3 +30,10 @@ Vite + React app configured for:
    `.github/workflows/deploy-pages.yml`
 
 The Vite `base` path is auto-detected in GitHub Actions using your repository name, so assets resolve correctly on GitHub Pages.
+
+## Troubleshooting
+
+- `index.tsx 404` on GitHub Pages:
+  This means source files are being served directly instead of the built `dist` output. Use the GitHub Actions Pages workflow above.
+- `cdn.tailwindcss.com should not be used in production`:
+  Resolved in this repo by compiling Tailwind during build (no CDN script).
