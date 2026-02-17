@@ -2,6 +2,7 @@
 import React from 'react';
 import { ShieldCheck, UserCircle2, LayoutDashboard, Gavel, ShieldAlert, Bell, Menu } from 'lucide-react';
 import { UserRole } from '../types';
+import ShieldIcon from '../assets/Lagedra-logo.png'; // Adjust path as needed
 
 interface Props {
   currentPage: string;
@@ -17,7 +18,11 @@ const Navbar: React.FC<Props> = ({ currentPage, onNavigate, currentRole }) => {
           <div className="flex items-center cursor-pointer" onClick={() => onNavigate('home')}>
             <div className="flex items-center gap-2.5 group">
                 <div className="bg-slate-900 text-white p-1.5 rounded-lg group-hover:scale-105 transition-transform shadow-md shadow-slate-900/10">
-                    <ShieldCheck size={24} />
+                    <img 
+                        src={ShieldIcon} 
+                        alt="Lagedra Logo" 
+                        className="w-6 h-6 object-contain" 
+                    />
                 </div>
                 <div className="flex flex-col">
                     <span className="font-bold text-xl tracking-tight text-slate-900 leading-none">Lagedra</span>
