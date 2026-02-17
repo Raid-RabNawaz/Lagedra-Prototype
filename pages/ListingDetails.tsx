@@ -9,7 +9,7 @@ import { useToast } from '../components/ToastProvider';
 import { 
   ShieldCheck, Map, Wifi, Car, Dumbbell, Lock, Dog, Ban, 
   Share, Heart, Star, User, Check, Shield, MapPin, 
-  Calendar, Flag, ChevronDown, MessageSquare, Info, Grip, X
+  Calendar, Flag, ChevronDown, MessageSquare, Info, Grip, X, Video, FileText, Mail, ChevronRight
 } from 'lucide-react';
 
 interface Props {
@@ -30,6 +30,7 @@ const ListingDetails: React.FC<Props> = ({ listing, onNavigate, currentRole, inq
   const [showWizard, setShowWizard] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
+  const [showTrustModal, setShowTrustModal] = useState(false);
 
   // Derived Data
   const tenantRisk = MOCK_USER_TENANT.verificationClass;
@@ -161,17 +162,20 @@ const ListingDetails: React.FC<Props> = ({ listing, onNavigate, currentRole, inq
                     </div>
                 </div>
 
-                {/* Property Trust Banner (Replacing Reviews) */}
+                {/* Property Trust Banner (Interactive) */}
                 <div className="py-8 border-b border-slate-200">
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-between shadow-sm relative overflow-hidden">
+                    <div 
+                        onClick={() => setShowTrustModal(true)}
+                        className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex items-center justify-between shadow-sm relative overflow-hidden cursor-pointer hover:bg-slate-100 transition-colors group"
+                    >
                         <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
                         <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
                                 <h3 className="text-lg font-bold text-slate-900">Protocol Verified Property</h3>
                                 {isFullyVerified && <Star size={16} className="text-emerald-500 fill-emerald-500" />}
                             </div>
-                            <p className="text-sm text-slate-600 max-w-md">
-                                One of the most trusted homes on Lagedra. Verified via GPS, Structured Video, and Ownership Documents.
+                            <p className="text-sm text-slate-600 max-w-md group-hover:text-slate-800">
+                                Click to view the full verification ledger and trust details.
                             </p>
                         </div>
                         <div className="text-center px-6 border-l border-slate-200">
@@ -181,31 +185,6 @@ const ListingDetails: React.FC<Props> = ({ listing, onNavigate, currentRole, inq
                         <div className="text-center px-6 border-l border-slate-200 hidden sm:block">
                             <div className="text-2xl font-bold text-slate-900">{totalChecks}</div>
                             <div className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Checks Passed</div>
-                        </div>
-                    </div>
-                    
-                    {/* Trust Details */}
-                    <div className="mt-6 space-y-4">
-                        <div className="flex items-start gap-4">
-                            <MapPin size={24} className="text-slate-900 mt-1" />
-                            <div>
-                                <h4 className="font-bold text-slate-900 text-sm">Location Verified</h4>
-                                <p className="text-sm text-slate-500">GPS metadata from on-site photos matches property coordinates.</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start gap-4">
-                            <Shield size={24} className="text-slate-900 mt-1" />
-                            <div>
-                                <h4 className="font-bold text-slate-900 text-sm">Ownership Verified</h4>
-                                <p className="text-sm text-slate-500">Deed and utility bill OCR matched to Host identity.</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start gap-4">
-                            <Calendar size={24} className="text-slate-900 mt-1" />
-                            <div>
-                                <h4 className="font-bold text-slate-900 text-sm">Free cancellation for 48 hours</h4>
-                                <p className="text-sm text-slate-500">Protocol holds funds in escrow until move-in validation.</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -238,7 +217,7 @@ const ListingDetails: React.FC<Props> = ({ listing, onNavigate, currentRole, inq
                     </button>
                 </div>
 
-                {/* Accessibility Features (New Section) */}
+                {/* Accessibility Features */}
                 {listing.accessibility && listing.accessibility.length > 0 && (
                     <div className="py-8 border-b border-slate-200">
                         <h3 className="text-xl font-bold text-slate-900 mb-6">Accessibility features</h3>
@@ -424,6 +403,78 @@ const ListingDetails: React.FC<Props> = ({ listing, onNavigate, currentRole, inq
                           <img src={src} className="w-full h-full object-cover rounded-xl shadow-sm hover:opacity-95 transition-opacity cursor-zoom-in" alt={`Gallery ${index}`} />
                       </div>
                   ))}
+              </div>
+          </div>
+      )}
+
+      {/* Trust Details Modal */}
+      {showTrustModal && (
+          <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden animate-in zoom-in duration-200">
+                  <div className="bg-slate-50 border-b border-slate-200 p-5 flex justify-between items-center">
+                      <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
+                          <ShieldCheck className="text-emerald-600" /> Protocol Verification
+                      </h3>
+                      <button onClick={() => setShowTrustModal(false)} className="text-slate-400 hover:text-slate-600">
+                          <X size={20} />
+                      </button>
+                  </div>
+                  <div className="p-6">
+                      <div className="text-center mb-6">
+                          <div className="text-4xl font-bold text-slate-900 mb-1">{verifiedCount}/5</div>
+                          <div className="text-sm text-slate-500 uppercase tracking-widest font-bold">Checks Passed</div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                          <div className={`flex items-start gap-4 p-4 rounded-lg border ${vStatus.photoMatch ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+                              <MapPin size={20} className={vStatus.photoMatch ? 'text-emerald-600' : 'text-slate-400'} />
+                              <div>
+                                  <h4 className="font-bold text-slate-900 text-sm">Location Verified (GPS)</h4>
+                                  <p className="text-xs text-slate-600 mt-1">
+                                      {vStatus.photoMatch ? 'GPS metadata from on-site photos matches property bounds (±3m).' : 'Pending verification.'}
+                                  </p>
+                              </div>
+                              {vStatus.photoMatch && <Check size={16} className="text-emerald-600 shrink-0 ml-auto" />}
+                          </div>
+
+                          <div className={`flex items-start gap-4 p-4 rounded-lg border ${vStatus.documents ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+                              <FileText size={20} className={vStatus.documents ? 'text-emerald-600' : 'text-slate-400'} />
+                              <div>
+                                  <h4 className="font-bold text-slate-900 text-sm">Ownership Documents</h4>
+                                  <p className="text-xs text-slate-600 mt-1">
+                                      {vStatus.documents ? 'Deed and utility bill OCR matched to Host identity.' : 'Pending verification.'}
+                                  </p>
+                              </div>
+                              {vStatus.documents && <Check size={16} className="text-emerald-600 shrink-0 ml-auto" />}
+                          </div>
+
+                          <div className={`flex items-start gap-4 p-4 rounded-lg border ${vStatus.videoTour ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+                              <Video size={20} className={vStatus.videoTour ? 'text-emerald-600' : 'text-slate-400'} />
+                              <div>
+                                  <h4 className="font-bold text-slate-900 text-sm">Structured Video Tour</h4>
+                                  <p className="text-xs text-slate-600 mt-1">
+                                      {vStatus.videoTour ? 'Continuous video walk-through validated against floor plan.' : 'Pending verification.'}
+                                  </p>
+                              </div>
+                              {vStatus.videoTour && <Check size={16} className="text-emerald-600 shrink-0 ml-auto" />}
+                          </div>
+
+                          <div className={`flex items-start gap-4 p-4 rounded-lg border ${vStatus.mailCode ? 'bg-emerald-50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+                              <Mail size={20} className={vStatus.mailCode ? 'text-emerald-600' : 'text-slate-400'} />
+                              <div>
+                                  <h4 className="font-bold text-slate-900 text-sm">Physical Mail Check</h4>
+                                  <p className="text-xs text-slate-600 mt-1">
+                                      {vStatus.mailCode ? 'Physical access confirmed via mailed PIN code.' : 'Pending verification.'}
+                                  </p>
+                              </div>
+                              {vStatus.mailCode && <Check size={16} className="text-emerald-600 shrink-0 ml-auto" />}
+                          </div>
+                      </div>
+
+                      <div className="mt-6 bg-slate-50 rounded-lg p-4 text-xs text-slate-500 text-center">
+                          Lagedra Protocol guarantees these checks were performed by a neutral node.
+                      </div>
+                  </div>
               </div>
           </div>
       )}
