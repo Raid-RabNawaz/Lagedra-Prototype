@@ -14,7 +14,6 @@ const ListingCard: React.FC<Props> = ({ listing, onClick, isSaved, onToggleSaved
   const vStatus = listing.verificationStatus || { photoMatch: false, videoTour: false, documents: false, mailCode: false, gpsMatch: false };
   const verifiedCount = Object.values(vStatus).filter(Boolean).length;
   const totalChecks = 5;
-  const trustPercent = (verifiedCount / totalChecks) * 100;
 
   const handleHeartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -63,21 +62,21 @@ const ListingCard: React.FC<Props> = ({ listing, onClick, isSaved, onToggleSaved
           {listing.location.approximate && <span className="ml-1 text-xs text-slate-400">(Approx)</span>}
         </div>
 
-        <div className="mb-4">
-             <div className="flex items-center justify-between mb-1">
-                 <div className="flex items-center gap-1 text-[10px] uppercase font-bold text-slate-500">
-                     <ShieldCheck size={12} className={verifiedCount === totalChecks ? 'text-emerald-500' : 'text-slate-400'} />
-                     Property Trust
-                 </div>
-                 <div className={`text-[10px] font-bold ${verifiedCount >= 4 ? 'text-emerald-600' : 'text-amber-600'}`}>
-                     {verifiedCount}/{totalChecks} Verified
-                 </div>
+        {/* Numeric Trust Indicator */}
+        <div className="mb-4 flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-100">
+             <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-xs border-2 shadow-sm shrink-0 ${
+                verifiedCount === 5 ? 'border-emerald-500 text-emerald-700 bg-white' : 'border-amber-500 text-amber-700 bg-white'
+             }`}>
+                 {verifiedCount}
              </div>
-             <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                 <div 
-                    className={`h-full rounded-full transition-all ${verifiedCount === 5 ? 'bg-emerald-500' : verifiedCount >= 3 ? 'bg-emerald-400' : 'bg-amber-400'}`} 
-                    style={{ width: `${trustPercent}%` }}
-                ></div>
+             <div className="flex-1">
+                 <div className="flex items-center gap-1 text-xs font-bold text-slate-900 uppercase">
+                     <ShieldCheck size={12} className={verifiedCount === totalChecks ? 'text-emerald-500' : 'text-amber-500'} />
+                     Trust Score
+                 </div>
+                 <div className="text-[10px] text-slate-500 leading-tight">
+                     {verifiedCount === totalChecks ? 'Fully Verified Property' : `${totalChecks - verifiedCount} Checks Pending`}
+                 </div>
              </div>
         </div>
 
