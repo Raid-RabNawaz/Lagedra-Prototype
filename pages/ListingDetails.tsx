@@ -112,7 +112,7 @@ const ListingDetails: React.FC<Props> = ({ listing, onNavigate, currentRole, inq
                     <span className="hidden sm:inline">{isSaved ? 'Saved' : 'Save'}</span>
                 </button>
             </div>
-        </div>
+        </div> 
 
         {/* 2. Image Grid */}
         <div className="grid grid-cols-4 grid-rows-2 gap-2 h-[300px] md:h-[480px] rounded-xl overflow-hidden relative mb-8">
