@@ -15,7 +15,7 @@ const TrustLedger: React.FC<Props> = ({ user }) => {
       case 'Compliance Violation':
         return <AlertTriangle className="text-red-500" size={18} />;
       case 'Arbitration Won':
-      case 'Arbitration Lost':
+      case 'Arbitration Lost': 
         return <Gavel className="text-blue-500" size={18} />;
       default:
         return <div className="w-4 h-4 bg-gray-200 rounded-full" />;
